@@ -1,0 +1,46 @@
+```{r}
+
+```
+
+
+
+
+```{r}
+setwd("/home/explorer/R/google_data_anlytics_casestudy-2/fitbitdat")
+list.files()
+```
+
+```{r}
+dayact = read_csv("dailyActivity_merged.csv")
+daycal = read_csv("dailyCalories_merged.csv")
+dayint = read_csv("dailyIntensities_merged.csv")
+daystp = read_csv("dailySteps_merged.csv")
+```
+
+```{r}
+daytotal = cbind(dayact,daycal,dayint,daystp)
+```
+
+```{r}
+daytotalx = daytotal[!duplicated(as.list(daytotal))]
+```
+
+```{r}
+#if(identical(daytotal$ActivityDate,daytotal$ActivityDay)){
+#  daytotal <- subset(daytotal, select = -ActivityDay)
+#}
+```
+
+
+.
+.
+.
+.
+.
+.
+
+
+
+
+```{r}
+```
