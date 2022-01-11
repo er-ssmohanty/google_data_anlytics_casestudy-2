@@ -10,7 +10,7 @@ library(lubridate)
 ```
 
 ```{r}
-setwd("/home/explorer/R/google_data_anlytics_casestudy-2/fitbitdat")
+setwd("fitbitdat")
 dayact = read_csv("dailyActivity_merged.csv")
 daycal = read_csv("dailyCalories_merged.csv")
 dayint = read_csv("dailyIntensities_merged.csv")
