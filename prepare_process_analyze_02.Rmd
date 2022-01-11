@@ -1,0 +1,39 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+hourcal = read_csv("fitbitdat/hourlyCalories_merged.csv")
+hourint = read_csv("fitbitdat/hourlyIntensities_merged.csv")
+hourstp = read_csv("fitbitdat/hourlySteps_merged.csv")
+```
+
+```{r}
+hourtotal = cbind(hourcal,hourint,hourstp)
+```
+
+```{r}
+hourtotalx = hourtotal[!duplicated(as.list(hourtotal))]
+```
+
+```{r}
+names(hourtotalx)
+```
+
+```{r}
+print(cor(hourtotalx$TotalIntensity,hourtotalx$Calories))
+print(cor(hourtotalx$AverageIntensity,hourtotalx$Calories))
+print(cor(hourtotalx$StepTotal,hourtotalx$Calories))
+```
+
+```{r}
+write_csv(hourtotalx,"hourly_data_comb.csv")
+```
+
