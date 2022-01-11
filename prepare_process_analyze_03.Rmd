@@ -1,0 +1,32 @@
+---
+title: "prepare_process_analyze_03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE)
+knitr::opts_knit$set(root.dir = "/home/explorer/R/google_data_anlytics_casestudy-2/")
+```
+
+```{r}
+library(lubridate)
+library(tidyverse)
+```
+
+```{r echo=FALSE, warning=FALSE}
+setwd("fitbitdat")
+list.files()
+```
+
+```{r message=FALSE, warning=FALSE}
+mincalnar = read_csv("fitbitdat/minuteCaloriesNarrow_merged.csv")
+```
+```{r}
+mincalnar$Id = as.character(mincalnar$Id)
+```
+
+
+```{r}
+ggplot(data=mincalnar)+geom_line(mapping = aes(x=ActivityMinute, y=Calories, color=Id))
+```
+
