@@ -41,5 +41,14 @@ print(cor(daytotalx$SedentaryActiveDistance,daytotalx$Calories))
 print(cor(daytotalx$VeryActiveMinutes,daytotalx$Calories))
 print(cor(daytotalx$FairlyActiveMinutes,daytotalx$Calories))
 print(cor(daytotalx$LightlyActiveMinutes,daytotalx$Calories))
+```
+
+
+```{r}
 print(cor(daytotalx$SedentaryMinutes,daytotalx$Calories))
 ```
+
+```{r}
+write_csv(daytotalx,"daily_data_comb.csv")
+```
+
