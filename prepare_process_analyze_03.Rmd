@@ -5,7 +5,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = FALSE)
-knitr::opts_knit$set(root.dir = "/home/explorer/R/google_data_anlytics_casestudy-2/")
+knitr::opts_knit$set(root.dir = "~/R/google_data_anlytics_casestudy-2/")
 ```
 
 ```{r}
@@ -20,13 +20,29 @@ list.files()
 
 ```{r message=FALSE, warning=FALSE}
 mincalnar = read_csv("fitbitdat/minuteCaloriesNarrow_merged.csv")
+minintnar = read_csv("fitbitdat/minuteIntensitiesNarrow_merged.csv")
+minstpnar = read_csv("fitbitdat/minuteStepsNarrow_merged.csv")
 ```
 ```{r}
-mincalnar$Id = as.character(mincalnar$Id)
+mintotal = cbind(mincalnar,minintnar$Intensity,minstpnar$Steps)
+```
+
+```{r}
+names(mintotal)[4:5]=c("Intensity","Steps")
+```
+
+```{r}
+mintotal$Id = as.character(mintotal$Id)
+```
+
+```{r}
+summary(mintotal)
 ```
 
 
 ```{r}
-ggplot(data=mincalnar)+geom_line(mapping = aes(x=ActivityMinute, y=Calories, color=Id))
+rm(mincalnar,minintnar,minstpnar)
+write_csv(mintotal,"minute_data_comb.csv")
+rm(mintotal)
 ```
 
