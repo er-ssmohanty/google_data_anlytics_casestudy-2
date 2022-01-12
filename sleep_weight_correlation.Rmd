@@ -1,0 +1,43 @@
+---
+title: "sleep_weight_correlation"
+output: pdf_document
+output:
+  md_document:
+    variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/R/google_data_anlytics_casestudy-2/")
+```
+
+## Sleep Vs Weight
+
+Let's find the correlation between sleep and relative body weight(BMI).
+
+First import the necessary data from respective csv files.
+```{r warning=FALSE}
+weightinf = read_csv("fitbitdat/weightLogInfo_merged.csv")
+sleepday = read_csv("fitbitdat/sleepDay_merged.csv")
+```
+First we will aggregate the sleep data by the ID taking the median of variables.
+
+
+```{r}
+sleepday$Id = as.character(sleepday$Id)
+sleepday2 <- group_by(sleepday,Id) %>% 
+  summarize(AverangeOfTotalBedTime = median(TotalTimeInBed),
+            AverageOfTotalSleepTime = median(TotalMinutesAsleep),
+            AverageOfTotalSleepRecords = mean(TotalSleepRecords),
+            Recordstaken=n())
+
+```
+
+Now let's move to weight data to aggregate by ID taking 
+```{r}
+weightinf$Id = as.character(weightinf$Id)
+
+```
+
+
+
