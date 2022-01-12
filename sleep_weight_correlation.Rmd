@@ -1,9 +1,6 @@
 ---
 title: "sleep_weight_correlation"
 output: pdf_document
-output:
-  md_document:
-    variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
@@ -17,27 +14,67 @@ Let's find the correlation between sleep and relative body weight(BMI).
 
 First import the necessary data from respective csv files.
 ```{r warning=FALSE}
+library(tidyverse,quietly = TRUE)
 weightinf = read_csv("fitbitdat/weightLogInfo_merged.csv")
 sleepday = read_csv("fitbitdat/sleepDay_merged.csv")
 ```
+Let's get some basic info about the data we just imported.
+
+```{r}
+weightinf$Id = as.character(weightinf$Id)
+sleepday$Id = as.character(sleepday$Id)
+print(head(sleepday))
+print(head(weightinf))
+print(summary(sleepday))
+print(summary(weightinf))
+
+```
+
+
+```{r}
+print(unique(sleepday$TotalSleepRecords))
+```
+`TotalSleepRecords` is probably the number of time the user is getting asleep on a day.
+
 First we will aggregate the sleep data by the ID taking the median of variables.
 
 
 ```{r}
-sleepday$Id = as.character(sleepday$Id)
 sleepday2 <- group_by(sleepday,Id) %>% 
-  summarize(AverangeOfTotalBedTime = median(TotalTimeInBed),
-            AverageOfTotalSleepTime = median(TotalMinutesAsleep),
-            AverageOfTotalSleepRecords = mean(TotalSleepRecords),
+  summarise(AverangeOfTotalBedTime = median(TotalTimeInBed),
+            MedianOfTotalSleepTime = median(TotalMinutesAsleep),
+            MedianOfTotalSleepRecords = median(TotalSleepRecords),
             Recordstaken=n())
-
+head(sleepday2)
 ```
 
 Now let's move to weight data to aggregate by ID taking 
 ```{r}
-weightinf$Id = as.character(weightinf$Id)
-
+weightinf2 <- group_by(weightinf,Id) %>%
+  summarise(MedianBMI = median(BMI),
+            RecordsTaken = n()
+  )
+head(weightinf2)
 ```
 
 
+Here we will perform an inner join(merge the two tables when both table share a common variable) between `sleepday2` and `weightinf2`.
 
+```{r}
+df = merge(x=sleepday2[,c(1:4)],y=weightinf2[,c(1,2)],by="Id")
+head(df)
+```
+
+We will now plot a line graph showing the relationship among the variables.
+
+```{r}
+ggplot(data=df)+geom_line(mapping = aes(x=AverangeOfTotalBedTime,
+  y=MedianBMI))+ geom_line(mapping = aes(x=MedianOfTotalSleepTime,
+                                y=MedianBMI))
+```
+
+```{r}
+print(cor(df$AverangeOfTotalBedTime,df$MedianBMI))
+print(cor(df$MedianOfTotalSleepTime,df$MedianBMI))
+print(cor(df$MedianOfTotalSleepRecords,df$MedianBMI))
+```
